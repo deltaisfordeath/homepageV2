@@ -4,14 +4,12 @@ using HomepageV2.Data.Models;
 
 namespace HomepageV2.Repos;
 
-public class BlogPostRepository<TContext, TEntity>(HomepageContext context)
-    : BaseRepository<HomepageContext, TEntity>(context)
-    where TContext : DbContext
-    where TEntity : BlogPost
+public class BlogPostRepository (HomepageContext context)
+    : BaseRepository<HomepageContext, BlogPost>(context)
 {
 
 
-    public async Task<TEntity?> FindByTitle(string title)
+    public async Task<BlogPost?> FindByTitle(string title)
     {
         return await DbSet.Where(_ => _.Title == title).FirstOrDefaultAsync();
     }
