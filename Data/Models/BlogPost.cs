@@ -1,15 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using homepageV2.Data.Models.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomepageV2.Data.Models;
 
-public class BlogPost
+[Index(nameof(BlogPost.Url), IsUnique = true)]
+
+public class BlogPost: PaginatedObject
 {
-    [Key]
-    public int Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    [MaxLength(255)]
-    public string Title { get; set; } = "";
-    [MaxLength(62000)]
-    public string Body { get; set; } = "";
+    public string Body { get; private set; }
+    [Required]
+    public string Url { get; private set; }
 }

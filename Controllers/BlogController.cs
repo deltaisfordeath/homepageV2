@@ -5,29 +5,42 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace homepageV2.Controllers;
 
+[Route("Blog")]
 public class BlogController: Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly BlogPostService _blogPostService;
-    
-    public static readonly string Name = "Blog";
+
+    public const string Name = "Blog";
 
     public BlogController(ILogger<HomeController> logger, BlogPostService blogPostService)
     {
         _logger = logger;
         _blogPostService = blogPostService;
     }
-
+    
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
-        var post = await _blogPostService.GetBlogPost("A New Post");
+        var posts = await _blogPostService.GetPageOfPosts(page);
+        var viewModel = new BlogIndexViewModel
+        {
+            Items = posts.Items,
+            HasNextPage = posts.HasNextPage
+        };
+        
+        return View(viewModel);
+    }
+
+    [HttpGet("{postId:int}")]
+    public async Task<IActionResult> Post(int postId)
+    {
+        var post = await _blogPostService.GetPostById(postId);
         var viewModel = new BlogPostViewModel
         {
             Title = post.Title,
             Body = post.Body
         };
-        
         return View(viewModel);
     }
 }

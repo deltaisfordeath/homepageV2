@@ -1,19 +1,16 @@
-@model BlogPostViewModel
+@model BlogIndexViewModel
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Blog - Kenny Heagle";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>@Model.Title</title>
-</head>
-<body>
 <div>
-    <h1>@Model.Title</h1>
-    <p>@Model.Body</p>
+    @foreach (var post in Model.Items)
+    {
+        <div>
+            <a href="/Blog/@post.Id">
+                <h3>@post.Title</h3>
+            </a>
+        </div>
+    }
 </div>
-</body>
-</html>
