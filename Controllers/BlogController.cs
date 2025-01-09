@@ -20,7 +20,7 @@ public class BlogController: Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> Index(int page = 1)
+    public async Task<IActionResult> Index([FromQuery] int page = 1)
     {
         var posts = await _blogPostService.GetPageOfPosts(page);
         var viewModel = new BlogIndexViewModel
