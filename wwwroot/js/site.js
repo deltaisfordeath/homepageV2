@@ -1,15 +1,15 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-function updateTheme() {
-    const colorMode = window.matchMedia("(prefers-color-scheme: dark)").matches ?
-        "dark" :
-        "light";
-    console.log(colorMode);
-    const nav = document.querySelector("nav");
-    nav.classList.add(`navbar-${colorMode}`);
-    nav.classList.add(`bg-${colorMode}`)
-}
-
-updateTheme();
+﻿// Navbar
+const menuButton = document.querySelector('[aria-controls="mobile-menu"]');
+const mobileMenu = document.querySelector('#mobile-menu');
+const menuIcons = menuButton.querySelectorAll('[data-slot="icon"]');
+menuButton.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+    
+    const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', !isExpanded);
+    
+    menuIcons.forEach((icon) => {
+        icon.classList.toggle('hidden');
+        icon.classList.toggle('block');
+    });
+});
