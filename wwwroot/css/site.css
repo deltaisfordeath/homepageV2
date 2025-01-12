@@ -15,5 +15,12 @@
     transition: height ease-in-out 150ms;
     height: 0;
     display: block;
+    visibility: hidden;
     overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+    .logo-container {
+        background-image: url(../img/logo128-gray.png);
+    }
 }
