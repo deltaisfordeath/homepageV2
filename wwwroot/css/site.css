@@ -3,10 +3,17 @@
 @tailwind utilities;
 
 .logo-container{
-    background-image: url(../img/logo128-gray.png);
+    background-image: url(../img/logo128.png);
     width: 30px;
     height: 30px;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+#mobile-menu {
+    transition: height ease-in-out 150ms;
+    height: 0;
+    display: block;
+    overflow: hidden;
 }
