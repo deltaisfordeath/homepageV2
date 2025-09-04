@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>b56be5f0-c650-495e-9ed7-1b84776fe2b9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,17 +18,11 @@
   <ItemGroup>
     <Folder Include="Client\" />
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\assets\" />
+    <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
-    <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
-  </ItemGroup>
-
-  <Target Name="Tailwind" BeforeTargets="Build">
-    <Exec Command="npm run css:build"/>
-  </Target>
 
 </Project>

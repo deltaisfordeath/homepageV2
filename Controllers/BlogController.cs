@@ -8,12 +8,12 @@ namespace homepageV2.Controllers;
 [Route("Blog")]
 public class BlogController: Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<BlogController> _logger;
     private readonly BlogPostService _blogPostService;
 
     public const string Name = "Blog";
 
-    public BlogController(ILogger<HomeController> logger, BlogPostService blogPostService)
+    public BlogController(ILogger<BlogController> logger, BlogPostService blogPostService)
     {
         _logger = logger;
         _blogPostService = blogPostService;
@@ -39,7 +39,8 @@ public class BlogController: Controller
         var viewModel = new BlogPostViewModel
         {
             Title = post.Title,
-            Body = post.Body
+            Body = post.Body,
+            ViewCount = post.ViewCount
         };
         return View(viewModel);
     }

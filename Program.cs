@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Configuration.AddUserSecrets<Program>();
+
 builder.Services.AddDbContextPool<HomepageContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
@@ -31,14 +33,13 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseDefaultFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapControllers();
+app.MapControllers(); // For your API controllers
+app.MapFallbackToFile("index.html");
 
 app.Run();

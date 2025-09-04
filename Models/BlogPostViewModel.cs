@@ -4,4 +4,6 @@ public class BlogPostViewModel
 {
     public string? Title { get; set; }
     public string? Body { get; set; }
+    
+    public int ViewCount { get; set; }
 }

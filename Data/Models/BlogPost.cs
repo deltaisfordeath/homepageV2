@@ -11,4 +11,5 @@ public class BlogPost: PaginatedObject
     public string Body { get; private set; }
     [Required]
     public string Url { get; private set; }
+    public int ViewCount { get; set; }
 }
