@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace homepageV2.Controllers;
 
-[Route("Blog")]
+[Route("api/Blog")]
 public class BlogController: Controller
 {
     private readonly ILogger<BlogController> _logger;
@@ -23,13 +23,27 @@ public class BlogController: Controller
     public async Task<IActionResult> Index([FromQuery] int page = 1)
     {
         var posts = await _blogPostService.GetPageOfPosts(page);
-        var viewModel = new BlogIndexViewModel
+        return new JsonResult(new
         {
-            Items = posts.Items,
-            HasNextPage = posts.HasNextPage
-        };
-        
-        return View(viewModel);
+            posts = posts.Items, 
+            hasNextPage = posts.HasNextPage, 
+            hasPreviousPage = posts.HasPreviousPage,
+            pageIndex = posts.PageIndex
+        });
+    }
+
+    [HttpGet("{articleUrl}")]
+    public async Task<IActionResult> BlogPost(string articleUrl)
+    {
+        var post = await _blogPostService.GetPostByUrl(articleUrl);
+        return new JsonResult(post);
+    }
+    
+    [HttpGet("all")]
+    public async Task<IActionResult> AllPosts([FromQuery] int page = 1)
+    {
+        var posts = await _blogPostService.GetBlogPosts();
+        return new JsonResult(posts);
     }
 
     [HttpGet("{postId:int}")]

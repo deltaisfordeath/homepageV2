@@ -1,6 +1,10 @@
 import kennyTriathlon from "../img/kenny_triathlon.png"
+import { createFileRoute } from '@tanstack/react-router'
 
-export default function Home() {
+export const Route = createFileRoute('/')({
+    component: Index,
+})
+export default function Index() {
     return <div>
         <div className="flex flex-col items-center mx-auto max-w-screen-lg px-2">
             <section>

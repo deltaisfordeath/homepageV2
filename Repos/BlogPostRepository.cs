@@ -8,21 +8,21 @@ namespace HomepageV2.Repos;
 public class BlogPostRepository (HomepageContext context)
     : BaseRepository<HomepageContext, BlogPost>(context)
 {
-    private readonly HomepageContext _context = context;
 
     public async Task<BlogPost?> FindByTitle(string title)
     {
         return await DbSet.Where(_ => _.Title == title).FirstOrDefaultAsync();
     }
 
-    public async Task<BlogPost?> FindById(int Id)
+    public async Task<BlogPost?> FindByUrl(string url)
     {
-        return await DbSet.Where(_ => _.Id == Id).FirstOrDefaultAsync();
+        return await DbSet.Where(_ => _.Url == url).FirstOrDefaultAsync();
     }
 
-    public async Task<PaginatedList<PaginatedObject>> GetPageOfPosts(int pageNum)
+    public async Task<PaginatedList<BlogPost>> GetPageOfPosts(int pageNum)
     {
-        return await PaginatedList<PaginatedObject>.CreateAsync(_context.BlogPosts, pageNum, p => p.CreatedAt);
+        var blogPage = await PaginatedList<BlogPost>.CreateAsync(Context.BlogPosts, pageNum, p => p.CreatedAt);
+        return blogPage;
     }
 
     public async Task<List<BlogPost>> GetAllPosts()

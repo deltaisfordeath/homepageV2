@@ -12,7 +12,13 @@ public class BlogPostService(BlogPostRepository blogPostRepository)
         return post;
     }
 
-    public async Task<PaginatedList<PaginatedObject>> GetPageOfPosts(int pageNum)
+    public async Task<BlogPost> GetPostByUrl(string url)
+    {
+        var post = await blogPostRepository.FindByUrl(url);
+        return post;
+    }
+
+    public async Task<PaginatedList<BlogPost>> GetPageOfPosts(int pageNum)
     {
         var postList = await blogPostRepository.GetPageOfPosts(pageNum);
         return postList;
