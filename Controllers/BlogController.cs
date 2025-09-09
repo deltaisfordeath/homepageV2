@@ -1,3 +1,4 @@
+using homepageV2.Common;
 using homepageV2.Models;
 using homepageV2.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -6,23 +7,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace homepageV2.Controllers;
 
 [Route("api/Blog")]
-public class BlogController: Controller
+public class BlogController(ILogger<BlogController> logger, BlogPostService blogPostService)
+    : Controller
 {
-    private readonly ILogger<BlogController> _logger;
-    private readonly BlogPostService _blogPostService;
+    private readonly ILogger<BlogController> _logger = logger;
 
-    public const string Name = "Blog";
-
-    public BlogController(ILogger<BlogController> logger, BlogPostService blogPostService)
-    {
-        _logger = logger;
-        _blogPostService = blogPostService;
-    }
-    
     [HttpGet]
     public async Task<IActionResult> Index([FromQuery] int page = 1)
     {
-        var posts = await _blogPostService.GetPageOfPosts(page);
+        var posts = await blogPostService.GetPageOfPosts(page);
         return new JsonResult(new
         {
             posts = posts.Items, 
@@ -35,27 +28,36 @@ public class BlogController: Controller
     [HttpGet("{articleUrl}")]
     public async Task<IActionResult> BlogPost(string articleUrl)
     {
-        var post = await _blogPostService.GetPostByUrl(articleUrl);
-        return new JsonResult(post);
+        var postResult = await blogPostService.GetPostByUrl(articleUrl);
+
+        if (postResult.IsSuccess) return new JsonResult(postResult.Value);
+        
+        if (postResult.Error is NotFoundError)
+        {
+            return NotFound(postResult.Error);
+        }
+        return BadRequest(postResult.Error);
+
     }
     
     [HttpGet("all")]
     public async Task<IActionResult> AllPosts([FromQuery] int page = 1)
     {
-        var posts = await _blogPostService.GetBlogPosts();
+        var posts = await blogPostService.GetBlogPosts();
         return new JsonResult(posts);
     }
 
     [HttpGet("{postId:int}")]
     public async Task<IActionResult> Post(int postId)
     {
-        var post = await _blogPostService.GetPostById(postId);
-        var viewModel = new BlogPostViewModel
+        var postResult = await blogPostService.GetPostById(postId);
+
+        if (postResult.IsSuccess) return new JsonResult(postResult.Value);
+        
+        if (postResult.Error is NotFoundError)
         {
-            Title = post.Title,
-            Body = post.Body,
-            ViewCount = post.ViewCount
-        };
-        return View(viewModel);
+            return NotFound(postResult.Error);
+        }
+        return BadRequest(postResult.Error);
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 builder.Configuration.AddUserSecrets<Program>();
 
@@ -21,7 +21,11 @@ builder.Services.AddScoped<HomepageContext>();
 builder.Services.AddScoped<BlogPostRepository>();
 builder.Services.AddScoped<BlogPostService>();
 
+builder.Services.AddTransient<GlobalErrorHandlingMiddleware>();
+
 var app = builder.Build();
+
+app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -32,14 +36,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
 app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllers(); // For your API controllers
+app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
