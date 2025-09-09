@@ -9,7 +9,6 @@ const postQueryOptions = (articleUrl: string) => queryOptions({
 });
 
 export const Route = createFileRoute('/blog/$article')({
-    // 2. The loader gets params and queryClient to pre-fetch the specific post
     loader: ({ params, context: { queryClient } }) =>
         queryClient.ensureQueryData(postQueryOptions(params.article)),
     component: BlogArticle,
