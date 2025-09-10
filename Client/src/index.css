@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -18,6 +16,18 @@ nav li a {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 1000;
+}
+
+nav li a.active::after {
+  position: absolute;
+  content: "";
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  z-index: 1000;
+  background: #242424;
 }
 
 .logo-icon {
